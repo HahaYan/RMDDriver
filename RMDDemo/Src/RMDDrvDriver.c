@@ -1,20 +1,25 @@
 #include<stdio.h>
 #include<sys/types.h>
+#include"Config.h"
 #include"USBSerial.h"
 #include"RMDDrvDriver.h"
 
 
 
 RMDDrvCMDTypedeef RMDL240;
+extern u_int8_t cnt;
+
 void UpdateCmdData2TransBuff(RMDDrvCMDTypedeef *pCmd, SerialTypedef *pCom);
 void DrvStandbyCmdHanler(SerialTypedef *pCom);
 void RDEncoderSTCmdDeal(SerialTypedef *pCom); 
 void DrvReplyMessageHandler(RMDDrvCMDTypedeef *pCmd, SerialTypedef *pCom);
 void PosMode1STCmdDeal(RMDDrvCMDTypedeef *pCmd, SerialTypedef *pCom);
 
+
 void RMDMessageHandler(RMDDrvCMDTypedeef *pCmd, SerialTypedef *pCom)
 {
     static u_int8_t TransCntRem = 0;
+    static u_int8_t  cntRem = 0;
     switch(pCmd->CmdTransStatus)
     {
         case RMD_CMD_STATE_IDLE:
@@ -35,6 +40,7 @@ void RMDMessageHandler(RMDDrvCMDTypedeef *pCmd, SerialTypedef *pCom)
 
             if(pCom->TransBytesCnt == pCom->TransBytesExp)
             {   
+               pCom->TransBytesCnt  = 0; 
                pCmd->CmdTransStatus = RMD_CMD_STATE_RX; 
                pCom->TransStatus    = SERIAL_RCV_BUSY;   
             }
@@ -64,10 +70,8 @@ void RMDMessageHandler(RMDDrvCMDTypedeef *pCmd, SerialTypedef *pCom)
                 pCom->TransStatus = SERIAL_RDY;
             }
             
-           
             break;
         case RMD_CMD_STATE_EXEC:
-
             DrvReplyMessageHandler(pCmd, pCom);
             pCmd->CmdTransStatus = RMD_CMD_STATE_IDLE;
             pCmd->CmdTransFinshFlag = 1;
@@ -76,6 +80,15 @@ void RMDMessageHandler(RMDDrvCMDTypedeef *pCmd, SerialTypedef *pCom)
 
             break;
     }
+
+#if DEBUG
+    if(cntRem != cnt)
+    {
+        cntRem = cnt;
+        printf("RMD cmd process status is %d.\n",pCmd->CmdTransStatus);
+    }
+#endif
+
 }
 
 void UpdateCmdData2TransBuff(RMDDrvCMDTypedeef *pCmd, SerialTypedef *pCom)

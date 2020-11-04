@@ -12,8 +12,6 @@
 #include"userTask.h"
 #include"usertimer.h"
 
-#define RMDCOM "/dev/ttyUSB0"
-
 int main(int argc, char* argv[])
 {
     u_int8_t i;
@@ -23,7 +21,7 @@ int main(int argc, char* argv[])
     //1.0 串口初始化
     SerialPortInit(&ttyUSB0);
     //2.0 设置定时任务周期
-    timer_init(0, 10000, 0, 500000);     //延时10ms后按500mS周期调用定时任务
+    timer_init(0, 10000, 0, 100000);     //延时10ms后按100mS周期调用定时任务
     //3.0 主循环任务
     while(1)
     {   
@@ -32,7 +30,7 @@ int main(int argc, char* argv[])
         //3.2 RMD通讯处理
         RMDMessageHandler(&RMDL240, &ttyUSB0);
         //3.3 定时调用函数31次后退出运行
-        if(cnt > 30) break; 
+        if(cnt > 100) break; 
     }
 
     close(ttyUSB0.fd);
