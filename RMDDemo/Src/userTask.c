@@ -8,7 +8,7 @@ int8_t CheckDriverStatus(RMDDrvCMDTypedeef *pCmd, SerialTypedef *pCom);
 u_int16_t GetEncoderData_ST(RMDDrvCMDTypedeef *pCmd, SerialTypedef *pCom);
 int8_t DrvReturn2Zero(RMDDrvCMDTypedeef *pCmd, SerialTypedef *pCom);
 int8_t SetposCmd_P1ST(RMDDrvCMDTypedeef *pCmd, SerialTypedef *pCom, u_int16_t tarPos);
-int8_t MotorRun2Tarpos_P1ST(RMDDrvCMDTypedeef *pCmd, SerialTypedef *pCom, u_int16_t tarPos);
+
 
 extern  u_int8_t cnt;
 void UserTaskHandler(u_int8_t *ptask)

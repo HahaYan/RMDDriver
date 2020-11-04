@@ -8,4 +8,6 @@ enum MainTask{
 };
 
 void UserTaskHandler(u_int8_t *ptask);
+int8_t MotorRun2Tarpos_P1ST(RMDDrvCMDTypedeef *pCmd, SerialTypedef *pCom, u_int16_t tarPos);
+
 #endif

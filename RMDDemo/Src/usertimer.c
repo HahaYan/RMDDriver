@@ -9,11 +9,6 @@
 #include"USBSerial.h"
 #include"RMDDrvDriver.h"
 
-enum COMStatus{
-    COM_IDLE = 0x00,
-    COM_WR,
-    COM_RD,
-};
 u_int8_t cnt;
 void signal_timer_handler(int signo);
 void COMWRHandler(void);
